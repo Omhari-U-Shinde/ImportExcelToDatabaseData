@@ -1,0 +1,75 @@
+ 2021-06-01--07:19  DEBUG-- File :Student.xlsx 
+ 2021-06-01--07:19  DEBUG-- -------------------------------READING THE SPREADSHEET------------------------------------- 
+ 2021-06-01--07:19  DEBUG-- S_Id 
+ 2021-06-01--07:19  DEBUG-- S_Name 
+ 2021-06-01--07:19  DEBUG-- S_City 
+ 2021-06-01--07:19  DEBUG-- S_Branch 
+ 2021-06-01--07:19  DEBUG-- CREATE TABLE   IF NOT EXISTS Student( Student_Id SERIAL  PRIMARY KEY,S_Id varchar(20)unique, S_Name varchar(20),S_City varchar(20),S_Branch varchar(20)); 
+ 2021-06-01--07:19  DEBUG-- S_Id,S_Name,S_City,S_Branch) 
+ 2021-06-01--07:19  DEBUG-- connected 
+ 2021-06-01--07:19  DEBUG-- Successfully Connected to the database! 
+ 2021-06-01--07:19  DEBUG-- student_id 
+ 2021-06-01--07:19  DEBUG-- s_id 
+ 2021-06-01--07:19  DEBUG-- s_name 
+ 2021-06-01--07:19  DEBUG-- s_city 
+ 2021-06-01--07:19  DEBUG-- s_branch 
+ 2021-06-01--07:19  DEBUG-- insert into Student(S_Id,S_Name,S_City,S_Branch) values('1' ,'om' ,'Latur' ,'CS') 
+ 2021-06-01--07:19  DEBUG-- Record Inserted 
+ 2021-06-01--07:19  DEBUG-- insert into Student(S_Id,S_Name,S_City,S_Branch) values('2' ,'hari' ,'Pune' ,'IT') 
+ 2021-06-01--07:19  DEBUG-- Record Inserted 
+ 2021-06-01--07:19  DEBUG-- insert into Student(S_Id,S_Name,S_City,S_Branch) values('3' ,'ram' ,'Mumbai' ,'IT') 
+ 2021-06-01--07:19  DEBUG-- Record Inserted 
+ 2021-06-01--07:19  DEBUG-- insert into Student(S_Id,S_Name,S_City,S_Branch) values('4' ,'abc' ,'Pune' ,'CS') 
+ 2021-06-01--07:19  DEBUG-- Record Inserted 
+ 2021-06-01--07:19  INFO-- 4 Records  Inserted 
+ 2021-06-01--07:19  INFO-- 0 Records Not Inserted 
+ 2021-06-01--10:15  DEBUG-- File :Student.xlsx 
+ 2021-06-01--10:15  DEBUG-- -------------------------------READING THE SPREADSHEET------------------------------------- 
+ 2021-06-01--10:15  DEBUG-- S_Id 
+ 2021-06-01--10:15  DEBUG-- S_Name 
+ 2021-06-01--10:15  DEBUG-- S_City 
+ 2021-06-01--10:15  DEBUG-- S_Branch 
+ 2021-06-01--10:15  DEBUG-- CREATE TABLE   IF NOT EXISTS Student( Student_Id SERIAL  PRIMARY KEY,S_Id varchar(20)unique, S_Name varchar(20),S_City varchar(20),S_Branch varchar(20)); 
+ 2021-06-01--10:15  DEBUG-- S_Id,S_Name,S_City,S_Branch) 
+ 2021-06-01--10:15  DEBUG-- connected 
+ 2021-06-01--10:15  DEBUG-- Successfully Connected to the database! 
+ 2021-06-01--10:15  DEBUG-- student_id 
+ 2021-06-01--10:15  DEBUG-- s_id 
+ 2021-06-01--10:15  DEBUG-- s_name 
+ 2021-06-01--10:15  DEBUG-- s_city 
+ 2021-06-01--10:15  DEBUG-- s_branch 
+ 2021-06-01--10:15  DEBUG-- insert into Student(S_Id,S_Name,S_City,S_Branch) values('1' ,'om' ,'Latur' ,'CS') 
+ 2021-06-01--10:15  DEBUG-- Record Inserted 
+ 2021-06-01--10:15  DEBUG-- insert into Student(S_Id,S_Name,S_City,S_Branch) values('2' ,'hari' ,'Pune' ,'IT') 
+ 2021-06-01--10:15  DEBUG-- Record Inserted 
+ 2021-06-01--10:15  DEBUG-- insert into Student(S_Id,S_Name,S_City,S_Branch) values('3' ,'ram' ,'Mumbai' ,'IT') 
+ 2021-06-01--10:15  DEBUG-- Record Inserted 
+ 2021-06-01--10:15  DEBUG-- insert into Student(S_Id,S_Name,S_City,S_Branch) values('4' ,'abc' ,'Pune' ,'CS') 
+ 2021-06-01--10:15  DEBUG-- Record Inserted 
+ 2021-06-01--10:15  INFO-- 4 Records  Inserted 
+ 2021-06-01--10:15  INFO-- 0 Records Not Inserted 
+ 2021-06-02--12:03  DEBUG-- File :Student.xlsx 
+ 2021-06-02--12:03  DEBUG-- -------------------------------READING THE SPREADSHEET------------------------------------- 
+ 2021-06-02--12:03  DEBUG-- S_Id 
+ 2021-06-02--12:03  DEBUG-- S_Name 
+ 2021-06-02--12:03  DEBUG-- S_City 
+ 2021-06-02--12:03  DEBUG-- S_Branch 
+ 2021-06-02--12:03  DEBUG-- CREATE TABLE   IF NOT EXISTS Student( Student_Id SERIAL  PRIMARY KEY,S_Id varchar(20)unique, S_Name varchar(20),S_City varchar(20),S_Branch varchar(20)); 
+ 2021-06-02--12:03  DEBUG-- S_Id,S_Name,S_City,S_Branch) 
+ 2021-06-02--12:03  DEBUG-- connected 
+ 2021-06-02--12:03  DEBUG-- Successfully Connected to the database! 
+ 2021-06-02--12:03  DEBUG-- student_id 
+ 2021-06-02--12:03  DEBUG-- s_id 
+ 2021-06-02--12:03  DEBUG-- s_name 
+ 2021-06-02--12:03  DEBUG-- s_city 
+ 2021-06-02--12:03  DEBUG-- s_branch 
+ 2021-06-02--12:03  DEBUG-- insert into Student(S_Id,S_Name,S_City,S_Branch) values('1' ,'om' ,'Latur' ,'CS') 
+ 2021-06-02--12:03  DEBUG-- Record Inserted 
+ 2021-06-02--12:03  DEBUG-- insert into Student(S_Id,S_Name,S_City,S_Branch) values('2' ,'hari' ,'Pune' ,'IT') 
+ 2021-06-02--12:03  DEBUG-- Record Inserted 
+ 2021-06-02--12:03  DEBUG-- insert into Student(S_Id,S_Name,S_City,S_Branch) values('3' ,'ram' ,'Mumbai' ,'IT') 
+ 2021-06-02--12:03  DEBUG-- Record Inserted 
+ 2021-06-02--12:03  DEBUG-- insert into Student(S_Id,S_Name,S_City,S_Branch) values('4' ,'abc' ,'Pune' ,'CS') 
+ 2021-06-02--12:03  DEBUG-- Record Inserted 
+ 2021-06-02--12:03  INFO-- 4 Records  Inserted 
+ 2021-06-02--12:03  INFO-- 0 Records Not Inserted 
