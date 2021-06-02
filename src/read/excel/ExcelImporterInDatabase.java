@@ -10,7 +10,9 @@ import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
@@ -20,7 +22,9 @@ import org.apache.log4j.Layout;
 import org.apache.log4j.Logger;
 import org.apache.log4j.PatternLayout;
 import org.apache.poi.ss.usermodel.Cell;
+
 import org.apache.poi.ss.usermodel.CellType;
+import org.apache.poi.ss.usermodel.DateUtil;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
@@ -43,7 +47,7 @@ public class ExcelImporterInDatabase {
 	static String[] fileNameExcel;
 
 	public static void main(String[] args) throws ClassNotFoundException, IOException {
-		
+
 		Layout layout = new PatternLayout(" %d{yyyy-MM-dd--hh:mm}  %p-- %m %n");
 		Appender app = new FileAppender(layout, "LogFile/data.log");
 		logger.addAppender(app);
@@ -73,7 +77,7 @@ public class ExcelImporterInDatabase {
 			String url = "Resource\\" + fn + ".xlsx";// Resource
 			File file = new File(url);
 			if (file.exists()) {
-				
+
 				String absolutePath = file.getAbsolutePath();
 				database.readFile(absolutePath, fn);
 
@@ -121,22 +125,27 @@ public class ExcelImporterInDatabase {
 
 				while (cellIterator.hasNext()) {
 					Cell cell = cellIterator.next();
-					cell.setCellType(CellType.STRING);
+					//cell.setCellType(CellType.STRING);
 					switch (cell.getCellType()) {
 
 					case STRING:// System.out.print(cell.getStringCellValue()+"\t");
 						val = cell.getStringCellValue();
 						list.add(val);
-						
+						//System.out.println(val);
 						break;
 
 					case NUMERIC:// System.out.print(cell.getNumericCellValue()+"\t");
-
-						valint = (int) cell.getNumericCellValue();
-						list.add(valint);
-
-						break;
-
+						 
+						if (DateUtil.isCellDateFormatted(cell)) {
+				            SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
+				            String s=(dateFormat.format(cell.getDateCellValue()));
+				            list.add(s);
+							break;
+						} else {
+				        	valint = (int) cell.getNumericCellValue();
+				        	list.add(valint);
+							break;
+				        }
 					// case BOOLEAN:System.out.println(cell.getBooleanCellValue());break;
 					}
 				}
@@ -171,8 +180,8 @@ public class ExcelImporterInDatabase {
 					logger.debug(b);
 					logger.debug(c);
 					// System.out.println(excelColumnList);
-					 createTable(b);
-					 getColumnList(tablename);
+					createTable(b);
+					getColumnList(tablename);
 					list.clear();
 					// excelColumnList.clear();
 
@@ -215,7 +224,7 @@ public class ExcelImporterInDatabase {
 					b.append("ON CONFLICT (" + excelColumnList.get(1) + ") DO  UPDATE SET ");
 					b.append(updatedata);
 					// System.out.println(b);
-					 insertTable(b);
+					insertTable(b);
 					list.clear();
 
 				}
