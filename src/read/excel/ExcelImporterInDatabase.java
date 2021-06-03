@@ -126,14 +126,15 @@ public class ExcelImporterInDatabase {
 				while (cellIterator.hasNext()) {
 					Cell cell = cellIterator.next();
 					//cell.setCellType(CellType.STRING);
+					
 					switch (cell.getCellType()) {
-
+					
 					case STRING:// System.out.print(cell.getStringCellValue()+"\t");
 						val = cell.getStringCellValue();
 						list.add(val);
 						//System.out.println(val);
 						break;
-
+						
 					case NUMERIC:// System.out.print(cell.getNumericCellValue()+"\t");
 						 
 						if (DateUtil.isCellDateFormatted(cell)) {
@@ -146,6 +147,7 @@ public class ExcelImporterInDatabase {
 				        	list.add(valint);
 							break;
 				        }
+					
 					// case BOOLEAN:System.out.println(cell.getBooleanCellValue());break;
 					}
 				}
@@ -163,7 +165,20 @@ public class ExcelImporterInDatabase {
 					for (int i = 0; i < list.size(); i++) {
 						logger.debug(list.get(i));
 						excelColumnList.add((String) list.get(i));
-						if (i == 0) {
+						String colName=list.get(i).toString();
+						colName=colName.toLowerCase();
+						if(colName.contains("date") && len==i+1)
+						{
+							b.append(list.get(i) + " date); ");
+							c.append(list.get(i) + ")");
+						}
+						
+						else if(colName.contains("date"))
+						{
+							b.append(list.get(i) + " date, ");
+							c.append(list.get(i) + ",");
+						}
+						 else if (i == 0) {
 							b.append(list.get(i) + " varchar(20)unique, ");
 							c.append(list.get(i) + ",");
 
@@ -201,8 +216,10 @@ public class ExcelImporterInDatabase {
 					for (int i = 0; i < list.size(); i++) {
 						if (len == i + 1) {
 							b.append("\'" + list.get(i) + "\')");
+							
 						} else {
 							b.append("\'" + list.get(i) + "\' ,");
+							
 						}
 						try {
 							if (excelColumnList.size() > i + 2) {
@@ -220,9 +237,10 @@ public class ExcelImporterInDatabase {
 							logger.error("please Fill all cell");
 						}
 					}
-					logger.debug(b);
+					
 					b.append("ON CONFLICT (" + excelColumnList.get(1) + ") DO  UPDATE SET ");
 					b.append(updatedata);
+					logger.debug(b);
 					// System.out.println(b);
 					insertTable(b);
 					list.clear();
@@ -375,7 +393,7 @@ public class ExcelImporterInDatabase {
 
 			result = stmt.executeUpdate(s);
 			if (result == 1) {
-				logger.debug("Record Inserted");
+				logger.debug("Record Inserted ");
 				recordInserted++;
 			} else {
 				// System.out.println("Table already exists");
