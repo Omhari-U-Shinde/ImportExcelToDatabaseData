@@ -109,149 +109,155 @@ public class ExcelImporterInDatabase {
 		flag = true;
 		FileInputStream fis;
 		String val;
-		StringBuffer c = new StringBuffer();
+		
 		int valint = 0;
 
 		try {
 			logger.debug("-------------------------------READING THE SPREADSHEET-------------------------------------");
 			fis = new FileInputStream(fileName);
 			XSSFWorkbook workbookRead = new XSSFWorkbook(fis);
-			XSSFSheet spreadsheetRead = workbookRead.getSheetAt(0);
 
-			Iterator<Row> rowIterator = spreadsheetRead.iterator();
-			while (rowIterator.hasNext()) {
-				row = (XSSFRow) rowIterator.next();
-				Iterator<Cell> cellIterator = row.cellIterator();
+			for (int k = 0; k < workbookRead.getNumberOfSheets(); k++) {
+				String fileSheetName = tablename + workbookRead.getSheetName(k);
+				XSSFSheet spreadsheetRead = workbookRead.getSheetAt(k);
+				Iterator<Row> rowIterator = spreadsheetRead.iterator();
+				StringBuffer c = new StringBuffer();
+				while (rowIterator.hasNext()) {
+					row = (XSSFRow) rowIterator.next();
+					Iterator<Cell> cellIterator = row.cellIterator();
 
-				while (cellIterator.hasNext()) {
-					Cell cell = cellIterator.next();
-					//cell.setCellType(CellType.STRING);
-					
-					switch (cell.getCellType()) {
-					
-					case STRING:// System.out.print(cell.getStringCellValue()+"\t");
-						val = cell.getStringCellValue();
-						list.add(val);
-						//System.out.println(val);
-						break;
-						
-					case NUMERIC:// System.out.print(cell.getNumericCellValue()+"\t");
-						 
-						if (DateUtil.isCellDateFormatted(cell)) {
-				            SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
-				            String s=(dateFormat.format(cell.getDateCellValue()));
-				            list.add(s);
+					while (cellIterator.hasNext()) {
+						Cell cell = cellIterator.next();
+						// cell.setCellType(CellType.STRING);
+
+						switch (cell.getCellType()) {
+
+						case STRING:// System.out.print(cell.getStringCellValue()+"\t");
+							val = cell.getStringCellValue();
+							list.add(val);
+							// System.out.println(val);
 							break;
-						} else {
-				        	valint = (int) cell.getNumericCellValue();
-				        	list.add(valint);
-							break;
-				        }
-					
-					// case BOOLEAN:System.out.println(cell.getBooleanCellValue());break;
-					}
-				}
-				// System.out.println(list);
-				// Create table
-				if (flag == true) {
-					flag = false;
-					StringBuffer b = new StringBuffer();
 
-					b.append("CREATE TABLE   IF NOT EXISTS " + tablename + "( " + tablename
-							+ "_Id SERIAL  PRIMARY KEY,");
-					excelColumnList.add(tablename + "_Id");
-					int len = list.size();
+						case NUMERIC:// System.out.print(cell.getNumericCellValue()+"\t");
 
-					for (int i = 0; i < list.size(); i++) {
-						logger.debug(list.get(i));
-						excelColumnList.add((String) list.get(i));
-						String colName=list.get(i).toString();
-						colName=colName.toLowerCase();
-						if(colName.contains("date") && len==i+1)
-						{
-							b.append(list.get(i) + " date); ");
-							c.append(list.get(i) + ")");
-						}
-						
-						else if(colName.contains("date"))
-						{
-							b.append(list.get(i) + " date, ");
-							c.append(list.get(i) + ",");
-						}
-						 else if (i == 0) {
-							b.append(list.get(i) + " varchar(20)unique, ");
-							c.append(list.get(i) + ",");
-
-						} else if (len == i + 1) {
-							b.append(list.get(i) + " varchar(20));");
-							c.append(list.get(i) + ")");
-
-						} else {
-							b.append(list.get(i) + " varchar(20),");
-							c.append(list.get(i) + ",");
-						}
-
-					}
-					logger.debug(b);
-					logger.debug(c);
-					// System.out.println(excelColumnList);
-					createTable(b);
-					getColumnList(tablename);
-					list.clear();
-					// excelColumnList.clear();
-
-				}
-				// Insert Record
-				else {
-					// StringBuffer s = new StringBuffer();
-					StringBuffer b = new StringBuffer();
-					StringBuffer updatedata = new StringBuffer();
-
-					b.append("insert into " + tablename + "(");
-					b.append(c);
-					b.append(" values(");
-					// System.out.println(excelColumnList);
-					int len = list.size();
-
-					for (int i = 0; i < list.size(); i++) {
-						if (len == i + 1) {
-							b.append("\'" + list.get(i) + "\')");
-							
-						} else {
-							b.append("\'" + list.get(i) + "\' ,");
-							
-						}
-						try {
-							if (excelColumnList.size() > i + 2) {
-								if (!(i == 0) && len == i + 2) {
-
-									updatedata.append(excelColumnList.get(i + 2) + "=\'" + list.get(i + 1) + "\';");
-									// System.out.println(updatedata);
-								} else {
-									updatedata.append(excelColumnList.get(i + 2) + "=\'" + list.get(i + 1) + "\',");
-									// System.out.println(updatedata);
-								}
+							if (DateUtil.isCellDateFormatted(cell)) {
+								SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
+								String s = (dateFormat.format(cell.getDateCellValue()));
+								list.add(s);
+								break;
+							} else {
+								valint = (int) cell.getNumericCellValue();
+								list.add(valint);
+								break;
 							}
-						} catch (Exception e) {
-							// TODO: handle exception
-							logger.error("please Fill all cell");
+
+							// case BOOLEAN:System.out.println(cell.getBooleanCellValue());break;
 						}
 					}
+
+					// System.out.println(list);
+					// Create table
+					if (flag == true) {
+						flag = false;
+						StringBuffer b = new StringBuffer();
+
+						b.append("CREATE TABLE   IF NOT EXISTS " + fileSheetName + "( " + fileSheetName
+								+ "_Id SERIAL  PRIMARY KEY,");
+						excelColumnList.add(fileSheetName + "_Id");
+						int len = list.size();
+
+						for (int i = 0; i < list.size(); i++) {
+							logger.debug(list.get(i));
+							excelColumnList.add((String) list.get(i));
+							String colName = list.get(i).toString();
+							colName = colName.toLowerCase();
+							if (colName.contains("date") && len == i + 1) {
+								b.append(list.get(i) + " date); ");
+								c.append(list.get(i) + ")");
+							}
+
+							else if (colName.contains("date")) {
+								b.append(list.get(i) + " date, ");
+								c.append(list.get(i) + ",");
+							} else if (i == 0) {
+								b.append(list.get(i) + " varchar(20)unique, ");
+								c.append(list.get(i) + ",");
+
+							} else if (len == i + 1) {
+								b.append(list.get(i) + " varchar(20));");
+								c.append(list.get(i) + ")");
+
+							} else {
+								b.append(list.get(i) + " varchar(20),");
+								c.append(list.get(i) + ",");
+							}
+
+						}
+						logger.debug(b);
+						logger.debug(c);
+						// System.out.println(excelColumnList);
+						createTable(b);
+						getColumnList(fileSheetName);
+						list.clear();
+						// excelColumnList.clear();
+
+					}
+					// Insert Record
+					else {
+						// System.out.println(excelColumnList);
+
+						// StringBuffer s = new StringBuffer();
+						StringBuffer b = new StringBuffer();
+						StringBuffer updatedata = new StringBuffer();
+
+						b.append("insert into " + fileSheetName + "(");
+						b.append(c);
+						b.append(" values(");
+						// System.out.println(excelColumnList);
+						int len = list.size();
+						// System.out.println(b);
+						// System.out.println(excelColumnList);
+						for (int i = 0; i < list.size(); i++) {
+							if (len == i + 1) {
+								b.append("\'" + list.get(i) + "\')");
+
+							} else {
+								b.append("\'" + list.get(i) + "\' ,");
+
+							}
+							try {
+								if (excelColumnList.size() > i + 2) {
+									if (!(i == 0) && len == i + 2) {
+
+										updatedata.append(excelColumnList.get(i + 2) + "=\'" + list.get(i + 1) + "\';");
+										// System.out.println(updatedata);
+									} else {
+										updatedata.append(excelColumnList.get(i + 2) + "=\'" + list.get(i + 1) + "\',");
+										// System.out.println(updatedata);
+									}
+								}
+							} catch (Exception e) {
+								// TODO: handle exception
+								logger.error("please Fill all cell");
+							}
+						}
+
+						b.append("ON CONFLICT (" + excelColumnList.get(1) + ") DO  UPDATE SET ");
+						b.append(updatedata);
+						logger.debug(b);
+
+						insertTable(b);
+						list.clear();
+
+					}
+
 					
-					b.append("ON CONFLICT (" + excelColumnList.get(1) + ") DO  UPDATE SET ");
-					b.append(updatedata);
-					logger.debug(b);
-					// System.out.println(b);
-					insertTable(b);
-					list.clear();
-
 				}
-
+				//c=null;
+				excelColumnList.clear();
+				flag = true;
 			}
-
 			fis.close();
-			c = null;
-			excelColumnList.clear();
 
 		} catch (IOException e) {
 
@@ -259,7 +265,7 @@ public class ExcelImporterInDatabase {
 		}
 	}
 
-	private void getColumnList(String tablename) {
+	private void getColumnList(String fileSheetName) {
 		Connection connection = null;
 		try {
 
@@ -282,7 +288,7 @@ public class ExcelImporterInDatabase {
 
 			Statement statement = connection.createStatement();
 
-			ResultSet results = statement.executeQuery("SELECT * FROM " + tablename);
+			ResultSet results = statement.executeQuery("SELECT * FROM " + fileSheetName);
 
 			// Get resultset metadata
 
@@ -329,7 +335,7 @@ public class ExcelImporterInDatabase {
 							// System.out.println("connected");
 							Connection conn = DriverManager.getConnection(url, user, password);
 							Statement stmt = conn.createStatement();
-							String query = "ALTER TABLE " + tablename + " ADD COLUMN " + uncommon.get(i)
+							String query = "ALTER TABLE " + fileSheetName + " ADD COLUMN " + uncommon.get(i)
 									+ " varchar(50)";
 
 							stmt.executeUpdate(query);
@@ -353,7 +359,7 @@ public class ExcelImporterInDatabase {
 							// System.out.println("connected");
 							Connection conn = DriverManager.getConnection(url, user, password);
 							Statement stmt = conn.createStatement();
-							String query = "ALTER TABLE " + tablename + " DROP COLUMN " + uncommon.get(i);
+							String query = "ALTER TABLE " + fileSheetName + " DROP COLUMN " + uncommon.get(i);
 
 							stmt.executeUpdate(query);
 							logger.info(uncommon.get(i) + " column deleted.");
